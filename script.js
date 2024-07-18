@@ -394,6 +394,7 @@ function getData() {
         const data = snapshot.val();
         if (data) {
             updateBins(data);
+            checkAndSendTelegramMessage(data);
         } else {
             console.log("No data available at this path.");
         }
@@ -409,6 +410,42 @@ function getData() {
         }
     });
 }
+
+function checkAndSendTelegramMessage(data) {
+    for (const bin in data) {
+        if (data[bin].fill > 75 && !notifiedBins[bin]) {
+            sendTelegramMessage(`Bin ${bin} is over 75% full. Current fill level: ${data[bin].fill}%.`);
+            notifiedBins[bin] = true; // Mark this bin as notified
+        } else if (data[bin].fill <= 75 && notifiedBins[bin]) {
+            // Reset the notification if the fill level goes below the threshold
+            notifiedBins[bin] = false;
+        }
+    }
+}
+
+function sendTelegramMessage(message) {
+    const token = '6413828101:AAGNvkCAkJpLkGToVaOPw7ZKdPrVLN_azLc'; // Replace with your bot token
+    const chatId = '-4274668427'; // Replace with your chat ID
+    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data.ok) {
+                throw new Error('Telegram API response was not ok');
+            }
+            console.log('Message sent to Telegram successfully');
+        })
+        .catch(error => {
+            console.error('Error sending message to Telegram:', error);
+        });
+}
+
 
 function getRoute() {
     const routeOption = document.getElementById('route-option').value;
