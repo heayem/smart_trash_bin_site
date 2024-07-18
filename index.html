@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Trash Bin Monitor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
+</head>
+<body>
+    <header>
+        <div>
+            <img src="images/logo-light.png" alt="Smart Bin Monitor Logo">
+            <span>Smart Bin Monitor</span>
+        </div>
+    </header>
+    <div class="map" id="map"></div>
+    <div id="mode-tog" class="mode-tog">
+        <img src="images/dark-mode.png" alt="Toggle Mode" id="mode-toggle-img">
+    </div>
+    <nav>
+        <a href="bins.html">
+            <img src="images/bin-page-dark.png" alt="Bins Mode" id="bins-toggle-img">
+        </a>
+    </nav>
+    <div class="sliding-panel" id="sliding-panel">
+        <div class="panel-header" id="panel-header">
+            <span class="pull-tab"></span>
+        </div>
+        <div class="container">
+            <div class="control-board" id="control-board">
+                <label for="route-option"></label>
+                <select id="route-option">
+                    <option value="" disabled selected>Select Option</option>
+                    <option value="shortest">Shortest Route</option>
+                    <option value="fill">Route Based on Level</option>
+                    <option value="openai">AI Suggestion</option>
+                </select>
+                <label for="station-option"></label>
+                <select id="station-option">
+                </select>
+                <div id="route-tog" class="route-tog">Search Route</div>
+            </div>
+            <div class="text-board">
+                <p id="route-summary"></p>
+                <p id="total-distance"></p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKrvPTDE_YSFrbOLlwaIi-iM9ge-Pchz0&libraries=geometry&callback=initMap"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Trash Bin Monitor</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            background-color: #002244;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1;
+            left: -25px;
+        }
+
+        header img {
+            height: 40px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        .item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            width: 100%;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .item:hover {
+            transform: translateY(-5px);
+        }
+
+        .details {
+            background: white;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 200px;
+        }
+        @media screen and (max-width: 768px) {
+            
+        }
+    </style>
+    <!-- Include Firebase and Chart.js -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAKrvPTDE_YSFrbOLlwaIi-iM9ge-Pchz0",
+            authDomain: "training-smart-trash-bin.firebaseapp.com",
+            databaseURL: "https://training-smart-trash-bin-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "training-smart-trash-bin",
+            storageBucket: "training-smart-trash-bin.appspot.com",
+            messagingSenderId: "296309931657",
+            appId: "1:296309931657:web:0c7f0c04ed7e66ab44d058",
+            measurementId: "G-MPY8Y3K9DJ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        function updateBins(data) {
+            const binList = document.getElementById('bin-list');
+            binList.innerHTML = '';
+            Object.keys(data).forEach(binId => {
+                const binData = data[binId];
+                const binItem = document.createElement('li');
+                binItem.className = 'item';
+                binItem.innerHTML = `
+                    <h3>${binId}</h3>
+                    <p>Location: ${binData.lat}, ${binData.lng}</p>
+                    <p>Fill Level: ${binData.fill}%</p>
+                    <div class="details">
+                        <p>Status: ${binData.status}</p>
+                        <div class="chart-container">
+                            <canvas id="chart-${binId}"></canvas>
+                        </div>
+                    </div>
+                `;
+                binList.appendChild(binItem);
+                createChart(binId, binData.fill);
+            });
+        }
+
+        function getData() {
+            const binsRef = firebase.database().ref('/trash-bin-database/');
+            binsRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    updateBins(data);
+                } else {
+                    console.log("No data available at this path.");
+                }
+            });
+        }
+
+        function createChart(binId, fillLevel) {
+            const ctx = document.getElementById(`chart-${binId}`).getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Filled', 'Empty'],
+                    datasets: [{
+                        data: [fillLevel, 100 - fillLevel],
+                        backgroundColor: ['#36A2EB', '#FFCE56'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            });
+        }
+
+        // Fetch data on page load
+        window.onload = getData;
+    </script>
+</head>
+<body>
+    <header>
+        <div>
+            <img src="images/list-logo.png" alt="List Logo">
+            <span>Information</span>
+        </div>
+    </header>
+    <div class="column">
+        <ul id="bin-list" class="list">
+            <!-- Bins will be populated dynamically here -->
+        </ul>
+    </div>
+</body>
+</html>

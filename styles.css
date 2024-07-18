@@ -1,0 +1,176 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #002244;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    left: -30px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1 ;
+}
+
+header img {
+    height: 40px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+nav a {
+    right: 50px;
+    top: 16px;
+    position: absolute;
+    z-index: 10;
+}
+nav a :hover {
+    transform: translateY(-2px);
+}
+
+nav a img {
+    height: 40px;
+}
+
+.text-board{
+    position: absolute;
+    z-index: 10;
+    bottom: 100px;
+    left: 30%;
+    right: 30%;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+#mode-tog {
+    position: absolute;
+    top: 16px;
+    right: 10px;
+    z-index: 10;
+    cursor: pointer;
+}
+
+#mode-tog :hover {
+    transform: translateY(-2px);
+}
+
+#mode-toggle-img {
+    width: 40px;
+}
+
+.control-board {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.control-board select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    width: 200px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.control-board select,
+.control-board button {
+    margin: 0 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+}
+.control-board button {
+    background-color: #002244;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.control-board button:hover {
+    background-color: #001a33;
+}
+#menu ul li ul {
+    position: absolute;
+    bottom: 100%; /* This makes the submenu appear above the parent menu item */
+    left: 0;
+}
+
+.route-tog {
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100px;
+    text-align: center;
+    flex-direction: row;
+}
+
+.map {
+    height: 100vh;
+    width: 100%;
+    position: center;
+}
+
+
+@media screen and (max-width: 768px) {
+        /* Control board container */
+    .control-board {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        right: -48%;
+        transform: translateX(-50%);
+        background: rgba(255, 255, 255, 0.8);
+        padding: 10px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column; /* Stack elements vertically on small screens */
+        position: center;
+    }
+
+    /* Select box */
+    .control-board select {
+        background-color: #f8f8f8;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        width: 100%; /* Full width on small screens */
+        cursor: pointer;
+        outline: none;
+        transition: border-color 0.3s ease;
+        margin-bottom: 10px; /* Add some spacing between select and buttons */
+        align-items: center;
+    }
+
+    .text-board{
+        position: absolute;
+        z-index: 10;
+        bottom: 180px;
+        left: 1%;
+        right: 1%;
+    }  
+}
